@@ -24,6 +24,17 @@ import {
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
 
+const Planet = (props) => {
+  return (
+    <View style={styles.sectionContainer}>
+    <Text style={styles.sectionTitle}>Welcome</Text>
+    <Text style={styles.sectionDescription}>
+      <Text style={styles.highlight}>Jupiter</Text> is visible today.
+    </Text>
+  </View>
+  );
+}
+
 const App: () => React$Node = () => {
   return (
     <>
@@ -43,12 +54,7 @@ const App: () => React$Node = () => {
             </View>
           )}
           <View style={styles.body}>
-            <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>Welcome</Text>
-              <Text style={styles.sectionDescription}>
-                <Text style={styles.highlight}>Jupiter</Text> is visible today.
-              </Text>
-            </View>
+            <Planet name='Jupiter' />
             <LearnMoreLinks />
           </View>
         </ScrollView>
