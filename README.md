@@ -1,5 +1,7 @@
   **PlanetWatch**
   By Matthew Fogel
+
+  Uses the astronomia library at https://github.com/commenthol/astronomia.
   
   
   **Run instructions for iOS:**
@@ -14,3 +16,4 @@
 
   **Run instructions for Windows and macOS:**
     • See https://aka.ms/ReactNative for the latest up-to-date instructions.
+  
