@@ -24,7 +24,19 @@ import {
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
 
-import rise from 'astronomia/src/rise'
+//import Julian date functionality
+import PlanetRise from 'astronomia/src/rise'
+
+import {data} from 'astronomia'
+
+import planetposition from 'astronomia/src/planetposition'
+
+//LEARN CONSTRUCTORS IN JS :)
+const earth = new planetposition.Planet(data.vsop87Bearth)
+const jupiter = new planetposition.Planet(data.vsop87Bjupiter)
+
+const today = Date.now()
+
 
 const Planet = (props) => {
   return (
