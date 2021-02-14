@@ -24,6 +24,8 @@ import {
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
 
+import rise from 'astronomia/src/rise'
+
 const Planet = (props) => {
   return (
     <View style={styles.sectionContainer}>
