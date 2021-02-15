@@ -32,50 +32,75 @@ import PlanetRise from 'astronomia/src/rise'
 import {data} from 'astronomia'
 
 import planetposition from 'astronomia/src/planetposition'
+import rise from 'astronomia/src/rise';
 
 RNLocation.configure({
   distanceFilter: 100
 })
 
-//LEARN CONSTRUCTORS IN JS :)
+let location;
+
+const Location = (props) => {
+
+  //use hooks for location state
+  const [viewLocation, isViewLocation] = useState([]);
+
+
+  const permissionHandler = async () => {
+
+    let permission = await RNLocation.checkPermission({
+      ios: 'whenInUse', // or 'always'
+      android: {
+        detail: 'coarse' // or 'fine'
+      }
+    });
+  
+    if(!permission) {
+      RNLocation.requestPermission({
+        ios: "whenInUse",
+        android: {
+          detail: "coarse",
+          rationale: {
+            title: "We need to access your location",
+            message: "We use your location to show where you are on the map",
+            buttonPositive: "OK",
+            buttonNegative: "Cancel"
+          }
+        }
+      }).then(granted => {
+        if (granted) {
+          RNLocation.getLatestLocation({timeout: 100})
+          .then(latestLocation => {
+            isViewLocation(latestLocation)
+          })
+        }
+      })
+    } else {
+      RNLocation.getLatestLocation({timeout: 100})
+      .then(latestLocation => {
+        isViewLocation(latestLocation)
+      })
+    }
+  }
+
+  return (
+    <View style={styles.location}>
+      <Button title="Get Location"
+        onPress={permissionHandler}
+      />
+      <Text style={styles.body}>Latitude: {viewLocation.longitude}</Text>
+      <Text style={styles.body}>Longitude: {viewLocation.latitude}</Text>
+    </View>
+  );
+}
+
 const earth = new planetposition.Planet(data.vsop87Bearth)
 const jupiter = new planetposition.Planet(data.vsop87Bjupiter)
 
 const today = Date.now()
 
-let location;
-const permissionHandler = async () => {
-
-  let permission = await RNLocation.checkPermission({
-    ios: 'whenInUse', // or 'always'
-    android: {
-      detail: 'coarse' // or 'fine'
-    }
-  });
-
-  if(!permission) {
-    RNLocation.requestPermission({
-      ios: "whenInUse",
-      android: {
-        detail: "coarse",
-        rationale: {
-          title: "We need to access your location",
-          message: "We use your location to show where you are on the map",
-          buttonPositive: "OK",
-          buttonNegative: "Cancel"
-        }
-      }
-    }).then(granted => {
-      if (granted) {
-        RNLocation.getLatestLocation({timeout: 100})
-        .then(latestLocation => {
-          [viewLocation, isViewLocation] = useState([])
-          isViewLocation(latestLocation)
-        })
-      }
-    })
-  }
-}
+//todo - update planetRise object with latitude and longitude
+const planetRise = new rise.PlanetRise(today, 1, 1, earth, jupiter)
 
 const Planet = (props) => {
   return (
@@ -85,21 +110,6 @@ const Planet = (props) => {
       <Text style={styles.highlight}>Jupiter</Text> is visible today.
     </Text>
   </View>
-  );
-}
-
-const Location = (props) => {
-  return (
-    <View style={styles.location}>
-      <Button title="Get Location"
-        onPress={permissionHandler}
-      />
-      <Text style={styles.body}>Latitude: {viewLocation.longitude}</Text>
-      <Text style={styles.body}>Longitude: {viewLocation.latitude}</Text>
-      <Button title="Send Location"
-        onPress={permissionHandler}
-      />
-    </View>
   );
 }
 
