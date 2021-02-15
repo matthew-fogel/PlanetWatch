@@ -40,12 +40,9 @@ RNLocation.configure({
 
 let location;
 
-const Location = (props) => {
+function useLocation() {
 
-  //use hooks for location state
   const [viewLocation, isViewLocation] = useState([]);
-
-
   const permissionHandler = async () => {
 
     let permission = await RNLocation.checkPermission({
@@ -54,7 +51,7 @@ const Location = (props) => {
         detail: 'coarse' // or 'fine'
       }
     });
-  
+    
     if(!permission) {
       RNLocation.requestPermission({
         ios: "whenInUse",
@@ -71,17 +68,25 @@ const Location = (props) => {
         if (granted) {
           RNLocation.getLatestLocation({timeout: 100})
           .then(latestLocation => {
-            isViewLocation(latestLocation)
+            isViewLocation(latestLocation);
           })
         }
       })
     } else {
       RNLocation.getLatestLocation({timeout: 100})
       .then(latestLocation => {
-        isViewLocation(latestLocation)
+        isViewLocation(latestLocation);
       })
     }
   }
+
+  return {viewLocation, permissionHandler}
+}
+
+const Location = (props) => {
+
+  //use hooks for location state
+  const {viewLocation, permissionHandler} = useLocation()
 
   return (
     <View style={styles.location}>
