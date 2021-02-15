@@ -6,7 +6,7 @@
  * @flow strict-local
  */
 
-import React from 'react';
+import React, { useState } from 'react';
 import {
   SafeAreaView,
   StyleSheet,
@@ -14,6 +14,7 @@ import {
   View,
   Text,
   StatusBar,
+  Button
 } from 'react-native';
 
 import {
@@ -24,12 +25,17 @@ import {
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
 
-//import Julian date functionality
+import RNLocation from 'react-native-location'
+
 import PlanetRise from 'astronomia/src/rise'
 
 import {data} from 'astronomia'
 
 import planetposition from 'astronomia/src/planetposition'
+
+RNLocation.configure({
+  distanceFilter: 100
+})
 
 //LEARN CONSTRUCTORS IN JS :)
 const earth = new planetposition.Planet(data.vsop87Bearth)
@@ -37,6 +43,39 @@ const jupiter = new planetposition.Planet(data.vsop87Bjupiter)
 
 const today = Date.now()
 
+let location;
+const permissionHandler = async () => {
+
+  let permission = await RNLocation.checkPermission({
+    ios: 'whenInUse', // or 'always'
+    android: {
+      detail: 'coarse' // or 'fine'
+    }
+  });
+
+  if(!permission) {
+    RNLocation.requestPermission({
+      ios: "whenInUse",
+      android: {
+        detail: "coarse",
+        rationale: {
+          title: "We need to access your location",
+          message: "We use your location to show where you are on the map",
+          buttonPositive: "OK",
+          buttonNegative: "Cancel"
+        }
+      }
+    }).then(granted => {
+      if (granted) {
+        RNLocation.getLatestLocation({timeout: 100})
+        .then(latestLocation => {
+          [viewLocation, isViewLocation] = useState([])
+          isViewLocation(latestLocation)
+        })
+      }
+    })
+  }
+}
 
 const Planet = (props) => {
   return (
@@ -49,7 +88,23 @@ const Planet = (props) => {
   );
 }
 
+const Location = (props) => {
+  return (
+    <View style={styles.location}>
+      <Button title="Get Location"
+        onPress={permissionHandler}
+      />
+      <Text style={styles.body}>Latitude: {viewLocation.longitude}</Text>
+      <Text style={styles.body}>Longitude: {viewLocation.latitude}</Text>
+      <Button title="Send Location"
+        onPress={permissionHandler}
+      />
+    </View>
+  );
+}
+
 const App: () => React$Node = () => {
+
   return (
     <>
       <StatusBar barStyle="dark-content" />
@@ -69,7 +124,7 @@ const App: () => React$Node = () => {
           )}
           <View style={styles.body}>
             <Planet name='Jupiter' />
-            <LearnMoreLinks />
+            <Location name='GetLocation' />
           </View>
         </ScrollView>
       </SafeAreaView>
@@ -81,12 +136,19 @@ const styles = StyleSheet.create({
   scrollView: {
     backgroundColor: Colors.lighter,
   },
+  location: {
+    marginTop: 10,
+    padding: 10,
+    borderRadius: 10,
+    width: '40%'
+  },
   engine: {
     position: 'absolute',
     right: 0,
   },
   body: {
     backgroundColor: Colors.black,
+    color: Colors.white,
   },
   sectionContainer: {
     marginTop: 32,
