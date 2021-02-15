@@ -99,15 +99,16 @@ const jupiter = new planetposition.Planet(data.vsop87Bjupiter)
 
 const today = Date.now()
 
-//todo - update planetRise object with latitude and longitude
-const planetRise = new rise.PlanetRise(today, 1, 1, earth, jupiter)
-
 const Planet = (props) => {
+
+  //todo - update planetRise object with latitude and longitude
+  const planetRise = new rise.PlanetRise(today, props.latitude, props.longitude, earth, jupiter)
+
   return (
     <View style={styles.sectionContainer}>
     <Text style={styles.sectionTitle}>Welcome</Text>
     <Text style={styles.sectionDescription}>
-      <Text style={styles.highlight}>Jupiter</Text> is visible today.
+      <Text style={styles.highlight}>Jupiter</Text> {props.latitude} is visible today.
     </Text>
   </View>
   );
