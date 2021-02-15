@@ -27,12 +27,11 @@ import {
 
 import RNLocation from 'react-native-location'
 
-import PlanetRise from 'astronomia/src/rise'
-
 import {data} from 'astronomia'
 
 import planetposition from 'astronomia/src/planetposition'
 import rise from 'astronomia/src/rise';
+import julian from 'astronomia/src/julian'
 
 RNLocation.configure({
   distanceFilter: 100
@@ -92,7 +91,7 @@ const Planet = (props) => {
 
   //use hooks for location state
   const {viewLocation, permissionHandler} = useLocation()
-
+  permissionHandler()
   //todo - update planetRise object with latitude and longitude
   const planetRise = new rise.PlanetRise(today, viewLocation.latitude, viewLocation.longitude, earth, jupiter)
 
@@ -101,13 +100,10 @@ const Planet = (props) => {
       <View style={styles.sectionContainer}>
       <Text style={styles.sectionTitle}>Welcome</Text>
       <Text style={styles.sectionDescription}>
-        <Text style={styles.highlight}>Jupiter</Text> {viewLocation.latitude} is visible today.
+        <Text style={styles.highlight}>Jupiter</Text> rises at {planetRise.times().rise} and sets at {planetRise.times().set} today.
       </Text>
       </View>
       <View style={styles.location}>
-        <Button title="Get Location"
-          onPress={permissionHandler}
-        />
         <Text style={styles.body}>Latitude: {viewLocation.longitude}</Text>
         <Text style={styles.body}>Longitude: {viewLocation.latitude}</Text>
       </View>
