@@ -31,7 +31,7 @@ import {data} from 'astronomia'
 
 import planetposition from 'astronomia/src/planetposition'
 import rise from 'astronomia/src/rise';
-import julian from 'astronomia/src/julian'
+import { JDToDate, CalendarGregorian, Calendar} from 'astronomia/src/julian'
 
 RNLocation.configure({
   distanceFilter: 100
@@ -92,15 +92,18 @@ const Planet = (props) => {
   //use hooks for location state
   const {viewLocation, permissionHandler} = useLocation()
   permissionHandler()
+  const date = new Date()
   //todo - update planetRise object with latitude and longitude
-  const planetRise = new rise.PlanetRise(today, viewLocation.latitude, viewLocation.longitude, earth, jupiter)
+  const planetRise = new rise.PlanetRise(date, viewLocation.latitude, viewLocation.longitude, earth, jupiter, { date: true})
+  let riseTime = planetRise.times()['rise'].toLocaleTimeString()
+  let setTime = planetRise.times()['set'].toLocaleTimeString()
 
   return (
     <View>
       <View style={styles.sectionContainer}>
       <Text style={styles.sectionTitle}>Welcome</Text>
       <Text style={styles.sectionDescription}>
-        <Text style={styles.highlight}>Jupiter</Text> rises at {planetRise.times().rise} and sets at {planetRise.times().set} today.
+        <Text style={styles.highlight}>Jupiter</Text> rises at {riseTime} and sets at {setTime} today.
       </Text>
       </View>
       <View style={styles.location}>
