@@ -84,6 +84,12 @@ function useLocation() {
 
 const earth = new planetposition.Planet(data.vsop87Bearth)
 const jupiter = new planetposition.Planet(data.vsop87Bjupiter)
+const mars = new planetposition.Planet(data.vsop87Bmars)
+const mercury = new planetposition.Planet(data.vsop87Bmercury)
+const neptune = new planetposition.Planet(data.vsop87Bneptune)
+const saturn = new planetposition.Planet(data.vsop87Bsaturn)
+const uranus = new planetposition.Planet(data.vsop87Buranus)
+const venus = new planetposition.Planet(data.vsop87Bvenus)
 
 const today = Date.now()
 
@@ -92,24 +98,21 @@ const Planet = (props) => {
   //use hooks for location state
   const {viewLocation, permissionHandler} = useLocation()
   permissionHandler()
+  let name = props.name
   const date = new Date()
   //todo - update planetRise object with latitude and longitude
-  const planetRise = new rise.PlanetRise(date, viewLocation.latitude, viewLocation.longitude, earth, jupiter, { date: true})
+  const planetRise = new rise.PlanetRise(date, viewLocation.latitude, viewLocation.longitude, earth, props.planet, { date: true})
   let riseTime = planetRise.times()['rise'].toLocaleTimeString()
   let setTime = planetRise.times()['set'].toLocaleTimeString()
 
   return (
     <View>
-      <View style={styles.sectionContainer}>
-      <Text style={styles.sectionTitle}>Welcome</Text>
-      <Text style={styles.sectionDescription}>
-        <Text style={styles.highlight}>Jupiter</Text> rises at {riseTime} and sets at {setTime} today.
+      <Text style={styles.highlight}>
+        {name} 
       </Text>
-      </View>
-      <View style={styles.location}>
-        <Text style={styles.body}>Latitude: {viewLocation.longitude}</Text>
-        <Text style={styles.body}>Longitude: {viewLocation.latitude}</Text>
-      </View>
+      <Text style={styles.sectionDescription}>
+        Rises at {riseTime} and sets at {setTime}.
+      </Text>
   </View>
   );
 }
@@ -134,7 +137,16 @@ const App: () => React$Node = () => {
             </View>
           )}
           <View style={styles.body}>
-            <Planet name='Jupiter' />
+            <View style={styles.sectionContainer}>
+              <Text style={styles.sectionTitle}>Welcome</Text>
+            </View>
+            <Planet name='Mercury' planet={mercury} />
+            <Planet name='Venus' planet={venus} />
+            <Planet name='Mars' planet={mars} />
+            <Planet name='Jupiter' planet={jupiter} />
+            <Planet name='Saturn' planet={saturn} />
+            <Planet name='Uranus' planet={uranus} />
+            <Planet name='Neptune' planet={neptune} />
           </View>
         </ScrollView>
       </SafeAreaView>
@@ -176,6 +188,9 @@ const styles = StyleSheet.create({
     color: Colors.white,
   },
   highlight: {
+    marginTop: 8,
+    fontSize: 18,
+    color: Colors.white,
     fontWeight: '700',
   },
   footer: {
