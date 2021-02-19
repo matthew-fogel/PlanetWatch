@@ -6,7 +6,10 @@
  * @flow strict-local
  */
 
+import 'react-native-gesture-handler';
 import React, { useState } from 'react';
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
 import {
   SafeAreaView,
   StyleSheet,
@@ -32,6 +35,8 @@ import {data} from 'astronomia'
 import planetposition from 'astronomia/src/planetposition'
 import rise from 'astronomia/src/rise';
 import { JDToDate, CalendarGregorian, Calendar} from 'astronomia/src/julian'
+
+const Stack = createStackNavigator();
 
 RNLocation.configure({
   distanceFilter: 100
@@ -117,8 +122,42 @@ const Planet = (props) => {
   );
 }
 
-const App: () => React$Node = () => {
+const HomePage = ({navigation}) => {
+  let today = new Date().toString()
+  return (
+    <>
+      <StatusBar barStyle="dark-content" />
+      <SafeAreaView>
+        <ScrollView
+          contentInsetAdjustmentBehavior="automatic"
+          style={styles.scrollView}>
+          <View style={styles.header}>
+            <Text style={styles.appTitle}>
+              PlanetWatch
+            </Text>
+          </View>
+          {global.HermesInternal == null ? null : (
+            <View style={styles.engine}>
+              <Text style={styles.footer}>Engine: Hermes</Text>
+            </View>
+          )}
+          <View style={styles.body}>
+            <View style={styles.sectionContainer}>
+              <Text style={styles.sectionTitle}>{today}</Text>
+            </View>
+            <Button
+              title="Explore"
+              onPress={() =>
+                navigation.navigate('PlanetList')}
+            />
+          </View>
+        </ScrollView>
+      </SafeAreaView>
+    </>
+  );
+};
 
+const PlanetList = ({navigation}) => {
   return (
     <>
       <StatusBar barStyle="dark-content" />
@@ -151,6 +190,23 @@ const App: () => React$Node = () => {
         </ScrollView>
       </SafeAreaView>
     </>
+  );
+};
+
+const App: () => React$Node = () => {
+  return (
+    <NavigationContainer>
+      <Stack.Navigator>
+        <Stack.Screen
+          name="HomePage"
+          component={HomePage}
+        />
+        <Stack.Screen
+          name="PlanetList"
+          component={PlanetList}
+        />
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 };
 
