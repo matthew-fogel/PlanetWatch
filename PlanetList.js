@@ -1,5 +1,5 @@
 /**
- * Sample React Native App
+ * PlanetList
  * https://github.com/facebook/react-native
  *
  * @format
@@ -117,40 +117,18 @@ const Planet = (props) => {
   );
 }
 
-const App: () => React$Node = () => {
+const PlanetList = (props) => {
 
   return (
-    <>
-      <StatusBar barStyle="dark-content" />
-      <SafeAreaView>
-        <ScrollView
-          contentInsetAdjustmentBehavior="automatic"
-          style={styles.scrollView}>
-          <View style={styles.header}>
-            <Text style={styles.appTitle}>
-              PlanetWatch
-            </Text>
-          </View>
-          {global.HermesInternal == null ? null : (
-            <View style={styles.engine}>
-              <Text style={styles.footer}>Engine: Hermes</Text>
-            </View>
-          )}
-          <View style={styles.body}>
-            <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>Welcome</Text>
-            </View>
-            <Planet name='Mercury' planet={mercury} />
-            <Planet name='Venus' planet={venus} />
-            <Planet name='Mars' planet={mars} />
-            <Planet name='Jupiter' planet={jupiter} />
-            <Planet name='Saturn' planet={saturn} />
-            <Planet name='Uranus' planet={uranus} />
-            <Planet name='Neptune' planet={neptune} />
-          </View>
-        </ScrollView>
-      </SafeAreaView>
-    </>
+    <View style={styles.body}>
+      <Planet name='Mercury' planet={mercury} />
+      <Planet name='Venus' planet={venus} />
+      <Planet name='Mars' planet={mars} />
+      <Planet name='Jupiter' planet={jupiter} />
+      <Planet name='Saturn' planet={saturn} />
+      <Planet name='Uranus' planet={uranus} />
+      <Planet name='Neptune' planet={neptune} />
+    </View>
   );
 };
 
@@ -171,6 +149,7 @@ const styles = StyleSheet.create({
   body: {
     backgroundColor: Colors.black,
     color: Colors.white,
+    height: "100%",
   },
   sectionContainer: {
     marginTop: 32,
@@ -201,13 +180,6 @@ const styles = StyleSheet.create({
     paddingRight: 12,
     textAlign: 'right',
   },
-  header: {
-    backgroundColor: '#00304E',
-  },
-  appTitle: {
-    color: Colors.white,
-    fontSize: 32,
-  }
 });
 
-export default App;
+export default PlanetList;
