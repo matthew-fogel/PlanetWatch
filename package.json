@@ -13,7 +13,8 @@
     "astronomia": "^2.3.1",
     "react": "16.13.1",
     "react-native": "0.63.4",
-    "react-native-location": "^2.5.0"
+    "react-native-location": "^2.5.0",
+    "react-native-navigation": "^7.10.0"
   },
   "devDependencies": {
     "@babel/core": "^7.8.4",
