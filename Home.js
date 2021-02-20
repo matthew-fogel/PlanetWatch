@@ -48,6 +48,9 @@ const Home = (props) => {
                   title: {
                     text: 'PlanetList'
                   }
+                },
+                bottomTabs: {
+                  visible: true
                 }
               }
             }
