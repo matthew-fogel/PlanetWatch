@@ -6,6 +6,7 @@ import {Navigation} from 'react-native-navigation';
 
 import PlanetList from './PlanetList';
 import Home from './Home';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 
 Navigation.setDefaultOptions({
     statusBar: {
@@ -27,64 +28,78 @@ Navigation.setDefaultOptions({
   }
 );
 
+async function getIcons() {
+  const icons = await Promise.all([
+    Ionicons.getImageSource('md-home', 25, '#4d089a'),
+    Ionicons.getImageSource('planet', 25, '#4d089a'),
+  ])
+  const [ home, planet ] = icons;
+  return { home, planet };
+}
 
 Navigation.registerComponent('Home', () => Home);
 Navigation.registerComponent('PlanetList', () => PlanetList);
 
-Navigation.events().registerAppLaunchedListener(() => {
-    Navigation.setRoot({
-        root: {
-            stack: {
-                children: [
-                    {
-                        component: {
-                            name: 'Home'
-                        },
-                        bottomTabs: {
-                          id: 'BOTTOM_TABS_LAYOUT',
+async function startApplication() {
+  const icons = await getIcons();
+
+  Navigation.setRoot({
+    root: {
+        stack: {
+            children: [
+                {
+                    component: {
+                        name: 'Home'
+                    },
+                    bottomTabs: {
+                      id: 'BOTTOM_TABS_LAYOUT',
+                      children: [
+                      {
+                        stack: {
+                          id: 'Home',
                           children: [
-                          {
-                            stack: {
-                              id: 'Home',
-                              children: [
-                                {
-                                  component: {
-                                      id: 'Home',
-                                      name: 'Home'
-                                  }
-                                }
-                              ],
-                              options: {
-                                bottomTab: {
-                                  icon: require('./home.png')
-                                }
+                            {
+                              component: {
+                                  id: 'Home',
+                                  name: 'Home'
                               }
                             }
-                          },
-                          {
-                            stack: {
-                              id: 'PlanetList',
-                              children: [
-                                {
-                                  component: {
-                                    id: 'PlanetList',
-                                    name: 'PlanetList'
-                                  }
-                                }
-                              ],
-                              options: {
-                                bottomTab: {
-                                  icon: require('./home.png')
-                                }
-                              }
+                          ],
+                          options: {
+                            bottomTab: {
+                              icon: icons.home
                             }
                           }
-                        ]
+                        }
                       },
-                    }
-                ]
-            }
+                      {
+                        stack: {
+                          id: 'PlanetList',
+                          children: [
+                            {
+                              component: {
+                                id: 'PlanetList',
+                                name: 'PlanetList'
+                              }
+                            }
+                          ],
+                          options: {
+                            bottomTab: {
+                              icon: icons.planet
+                            }
+                          }
+                        }
+                      }
+                    ]
+                  },
+                }
+            ]
         }
-    })
-})
+    }
+  })
 
+}
+
+Navigation.events().registerAppLaunchedListener(() => {
+  startApplication()
+})
