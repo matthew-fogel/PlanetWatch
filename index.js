@@ -24,47 +24,6 @@ Navigation.setDefaultOptions({
           color: '#00304E',
         }
       },
-    bottomTabs: {
-        id: 'BOTTOM_TABS_LAYOUT',
-        children: [
-        {
-          stack: {
-            id: 'Home',
-            children: [
-              {
-                component: {
-                    id: 'Home',
-                    name: 'Home'
-                }
-              }
-            ],
-            options: {
-              bottomTab: {
-                icon: require('./home.png')
-              }
-            }
-          }
-        },
-        {
-          stack: {
-            id: 'PlanetList',
-            children: [
-              {
-                component: {
-                  id: 'PlanetList',
-                  name: 'PlanetList'
-                }
-              }
-            ],
-            options: {
-              bottomTab: {
-                icon: require('./home.png')
-              }
-            }
-          }
-        }
-      ]
-    },
   }
 );
 
@@ -80,7 +39,48 @@ Navigation.events().registerAppLaunchedListener(() => {
                     {
                         component: {
                             name: 'Home'
-                        }
+                        },
+                        bottomTabs: {
+                          id: 'BOTTOM_TABS_LAYOUT',
+                          children: [
+                          {
+                            stack: {
+                              id: 'Home',
+                              children: [
+                                {
+                                  component: {
+                                      id: 'Home',
+                                      name: 'Home'
+                                  }
+                                }
+                              ],
+                              options: {
+                                bottomTab: {
+                                  icon: require('./home.png')
+                                }
+                              }
+                            }
+                          },
+                          {
+                            stack: {
+                              id: 'PlanetList',
+                              children: [
+                                {
+                                  component: {
+                                    id: 'PlanetList',
+                                    name: 'PlanetList'
+                                  }
+                                }
+                              ],
+                              options: {
+                                bottomTab: {
+                                  icon: require('./home.png')
+                                }
+                              }
+                            }
+                          }
+                        ]
+                      },
                     }
                 ]
             }
