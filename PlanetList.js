@@ -6,7 +6,7 @@
  * @flow strict-local
  */
 
-import React, { useState } from 'react';
+import React, { useState} from 'react';
 import {
   SafeAreaView,
   StyleSheet,
@@ -14,8 +14,15 @@ import {
   View,
   Text,
   StatusBar,
-  Button
+  Button,
+  FlatList,
+  TouchableOpacity,
+  Modal,
 } from 'react-native';
+
+import { 
+  Overlay
+} from 'react-native-elements'
 
 import {
   Header,
@@ -93,29 +100,118 @@ const venus = new planetposition.Planet(data.vsop87Bvenus)
 
 const today = Date.now()
 
-const Planet = (props) => {
+const getPlanetRise = (props) => {
 
   //use hooks for location state
   const {viewLocation, permissionHandler} = useLocation()
   permissionHandler()
-  let name = props.name
   const date = new Date()
   //todo - update planetRise object with latitude and longitude
   const planetRise = new rise.PlanetRise(date, viewLocation.latitude, viewLocation.longitude, earth, props.planet, { date: true})
   let riseTime = planetRise.times()['rise'].toLocaleTimeString()
+  return riseTime;
+}
+
+const getPlanetSet = (props) => {
+
+  //use hooks for location state
+  const {viewLocation, permissionHandler} = useLocation()
+  permissionHandler()
+  const date = new Date()
+  //todo - update planetRise object with latitude and longitude
+  const planetRise = new rise.PlanetRise(date, viewLocation.latitude, viewLocation.longitude, earth, props.planet, { date: true})
   let setTime = planetRise.times()['set'].toLocaleTimeString()
+  return setTime;
+}
+
+const DATA = [
+  {
+    id: 'mercury',
+    planet: mercury,
+    title: 'Mercury',
+  },
+  {
+    id: 'venus',
+    planet: venus,
+    title: 'Venus',
+  },
+  {
+    id: 'mars',
+    planet: mars,
+    title: 'Mars',
+  },
+  {
+    id: 'jupiter',
+    planet: jupiter,
+    title: 'Jupiter',
+  },
+  {
+    id: 'saturn',
+    planet: saturn,
+    title: 'Saturn',
+  },
+  {
+    id: 'uranus',
+    planet: uranus,
+    title: 'Uranus',
+  },
+  {
+    id: 'neptune',
+    planet: neptune,
+    title: 'Neptune',
+  },
+];
+
+const Item = ({ item, onPress, style }) => (
+  <TouchableOpacity onPress={onPress} style={[styles.item, style]}>
+    <Text style={styles.title}>{item.title}</Text>
+  </TouchableOpacity>
+);
+
+const PlanetList = (props) => {
+
+  const [selectedId, setSelectedId] = useState(null);
+  const [visible, setVisible] = useState(false);
+  const [selectedPlanet, setSelectedPlanet] = useState(null);
+
+  const toggleOverlay = () => {
+    setVisible(!visible);
+  };
+
+  const renderItem = ({ item }) => {
+    const backgroundColor = item.id === selectedId ? "#6e3b6e" : "#f9c2ff";
+    return (
+      <Item
+        item={item}
+        onPress={() => {
+          setSelectedId(item.id);
+          setSelectedPlanet(item.planet);
+          toggleOverlay();
+        }}
+        style={{ backgroundColor }}
+      />
+    );
+  };
 
   return (
-    <View>
-      <Text style={styles.highlight}>
-        {name} 
-      </Text>
-      <Text style={styles.sectionDescription}>
-        Rises at {riseTime} and sets at {setTime}.
-      </Text>
-  </View>
+    <View style={styles.body}>
+      <FlatList
+        data={DATA}
+        renderItem={renderItem}
+        keyExtractor={(item) => item.id}
+        extraData={selectedId}
+      />
+      
+      <Overlay isVisible={visible} onBackdropPress={toggleOverlay}>
+        <Text>
+          This is the planet {selectedId}.
+        </Text>
+      </Overlay>
+    </View>
   );
-}
+};
+
+/*
 
 const PlanetList = (props) => {
 
@@ -131,7 +227,7 @@ const PlanetList = (props) => {
     </View>
   );
 };
-
+*/
 const styles = StyleSheet.create({
   scrollView: {
     backgroundColor: Colors.lighter,
@@ -179,6 +275,18 @@ const styles = StyleSheet.create({
     padding: 4,
     paddingRight: 12,
     textAlign: 'right',
+  },
+  container: {
+    flex: 1,
+    marginTop: StatusBar.currentHeight || 0,
+  },
+  item: {
+    padding: 20,
+    marginVertical: 8,
+    marginHorizontal: 16,
+  },
+  title: {
+    fontSize: 32,
   },
 });
 
