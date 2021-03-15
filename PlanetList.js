@@ -173,6 +173,7 @@ const PlanetList = (props) => {
 
   const [selectedId, setSelectedId] = useState(null);
   const [visible, setVisible] = useState(false);
+  const [selectedName, setSelectedName] = useState(null);
   const [selectedPlanet, setSelectedPlanet] = useState(null);
 
   const toggleOverlay = () => {
@@ -185,9 +186,9 @@ const PlanetList = (props) => {
       <Item
         item={item}
         onPress={() => {
-          setSelectedId(item.id);
-          setSelectedPlanet(item.planet);
           toggleOverlay();
+          setSelectedId(item.id)
+          setSelectedName(item.title)
         }}
         style={{ backgroundColor }}
       />
@@ -202,7 +203,12 @@ const PlanetList = (props) => {
         keyExtractor={(item) => item.id}
         extraData={selectedId}
       />
-
+      
+      <Overlay isVisible={visible} onBackdropPress={toggleOverlay}>
+        <Text>
+          {selectedName}
+        </Text>
+      </Overlay>
     </View>
   );
 };
