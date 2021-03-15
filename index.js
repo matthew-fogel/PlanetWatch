@@ -6,6 +6,7 @@ import {Navigation} from 'react-native-navigation';
 
 import PlanetList from './PlanetList';
 import Home from './Home';
+import PlanetDetail from './PlanetDetail';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
 Navigation.setDefaultOptions({
@@ -39,6 +40,7 @@ async function getIcons() {
 
 Navigation.registerComponent('Home', () => Home);
 Navigation.registerComponent('PlanetList', () => PlanetList);
+Navigation.registerComponent('PlanetDetail', () => PlanetDetail);
 
 async function startApplication() {
   const icons = await getIcons();

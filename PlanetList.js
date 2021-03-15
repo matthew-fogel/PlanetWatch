@@ -6,6 +6,7 @@
  * @flow strict-local
  */
 
+import {Navigation} from 'react-native-navigation';
 import React, { useState} from 'react';
 import {
   SafeAreaView,
@@ -185,11 +186,24 @@ const PlanetList = (props) => {
     return (
       <Item
         item={item}
-        onPress={() => {
-          toggleOverlay();
-          setSelectedId(item.id)
-          setSelectedName(item.title)
-        }}
+        onPress={() => Navigation.push(props.componentId, {
+          component: {
+            name: 'PlanetDetail',
+            options: {
+              topBar: {
+                title: {
+                  text: 'PlanetDetail'
+                }
+              },
+              bottomTabs: {
+                visible: true
+              }
+            },
+            passProps: {
+              planetName: item.title
+            }
+          },
+        })}
         style={{ backgroundColor }}
       />
     );
@@ -203,12 +217,6 @@ const PlanetList = (props) => {
         keyExtractor={(item) => item.id}
         extraData={selectedId}
       />
-      
-      <Overlay isVisible={visible} onBackdropPress={toggleOverlay}>
-        <Text>
-          {selectedName}
-        </Text>
-      </Overlay>
     </View>
   );
 };
