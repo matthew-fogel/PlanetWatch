@@ -101,7 +101,6 @@ const venus = new planetposition.Planet(data.vsop87Bvenus)
 const today = Date.now()
 
 const getPlanetRise = (props) => {
-
   //use hooks for location state
   const {viewLocation, permissionHandler} = useLocation()
   permissionHandler()
@@ -164,7 +163,9 @@ const DATA = [
 
 const Item = ({ item, onPress, style }) => (
   <TouchableOpacity onPress={onPress} style={[styles.item, style]}>
-    <Text style={styles.title}>{item.title}</Text>
+    <Text>
+      Today, {item.title} rises at {getPlanetRise({planet: item.planet})} and sets at {getPlanetSet({planet: item.planet})}
+    </Text>
   </TouchableOpacity>
 );
 
@@ -201,12 +202,7 @@ const PlanetList = (props) => {
         keyExtractor={(item) => item.id}
         extraData={selectedId}
       />
-      
-      <Overlay isVisible={visible} onBackdropPress={toggleOverlay}>
-        <Text>
-          This is the planet {selectedId}.
-        </Text>
-      </Overlay>
+
     </View>
   );
 };
