@@ -200,7 +200,8 @@ const PlanetList = (props) => {
               }
             },
             passProps: {
-              planetName: item.title
+              planetName: item.title,
+              planetObject: item.planet
             }
           },
         })}
