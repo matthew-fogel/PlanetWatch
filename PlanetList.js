@@ -14,9 +14,11 @@ import {
   ScrollView,
   View,
   Text,
+  Image,
   StatusBar,
   Button,
   FlatList,
+  Dimensions,
   TouchableOpacity,
 } from 'react-native';
 
@@ -43,44 +45,52 @@ const DATA = [
     id: 'mercury',
     planet: mercury,
     title: 'Mercury',
+    image: require('./android/app/src/image/Mercury.jpg')
   },
   {
     id: 'venus',
     planet: venus,
     title: 'Venus',
+    image: require('./android/app/src/image/venus.jpg')
   },
   {
     id: 'mars',
     planet: mars,
     title: 'Mars',
+    image: require('./android/app/src/image/mars.jpg')
   },
   {
     id: 'jupiter',
     planet: jupiter,
     title: 'Jupiter',
+    image: require('./android/app/src/image/jupiter.jpg')
   },
   {
     id: 'saturn',
     planet: saturn,
     title: 'Saturn',
+    image: require('./android/app/src/image/saturn.jpg')
   },
   {
     id: 'uranus',
     planet: uranus,
     title: 'Uranus',
+    image: require('./android/app/src/image/uranus.jpg')
   },
   {
     id: 'neptune',
     planet: neptune,
     title: 'Neptune',
+    image: require('./android/app/src/image/neptune1.png')
   },
 ];
 
-const Item = ({ item, onPress, style }) => (
+const Item = ({ item, onPress, style, image }) => (
   <TouchableOpacity onPress={onPress} style={[styles.item, style]}>
-    <Text>
-      {item.title}
-    </Text>
+    <Image
+      style={styles.planetImage}
+      source={image}
+    />
   </TouchableOpacity>
 );
 
@@ -100,6 +110,7 @@ const PlanetList = (props) => {
     return (
       <Item
         item={item}
+        image={item.image}
         onPress={() => Navigation.push(props.componentId, {
           component: {
             name: 'PlanetDetail',
@@ -213,6 +224,12 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 32,
   },
+  planetImage: {
+    margin: 1,
+    height: Dimensions.get('window').width / 4,
+    width: Dimensions.get('window').width / 4,
+    resizeMode: 'cover'
+  }
 });
 
 export default PlanetList;
