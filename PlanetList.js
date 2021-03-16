@@ -54,6 +54,12 @@ const DATA = [
     image: require('./android/app/src/image/venus.jpg')
   },
   {
+    id: 'earth',
+    planet: mars,
+    title: 'Earth',
+    image: require('./android/app/src/image/earth.jpg')
+  },
+  {
     id: 'mars',
     planet: mars,
     title: 'Mars',
@@ -142,6 +148,8 @@ const PlanetList = (props) => {
         renderItem={renderItem}
         keyExtractor={(item) => item.id}
         extraData={selectedId}
+        numColumns={2}
+        horizontal={false}
       />
     </View>
   );
@@ -217,9 +225,9 @@ const styles = StyleSheet.create({
     marginTop: StatusBar.currentHeight || 0,
   },
   item: {
-    padding: 20,
-    marginVertical: 8,
-    marginHorizontal: 16,
+    padding: 0,
+    marginVertical: 0,
+    marginHorizontal: 0,
   },
   title: {
     fontSize: 32,
