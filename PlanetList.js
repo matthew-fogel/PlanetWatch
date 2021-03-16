@@ -18,12 +18,7 @@ import {
   Button,
   FlatList,
   TouchableOpacity,
-  Modal,
 } from 'react-native';
-
-import { 
-  Overlay
-} from 'react-native-elements'
 
 import {
   Header,
@@ -32,65 +27,9 @@ import {
   DebugInstructions,
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
-
-import RNLocation from 'react-native-location'
-
 import {data} from 'astronomia'
-
 import planetposition from 'astronomia/src/planetposition'
-import rise from 'astronomia/src/rise';
-import { JDToDate, CalendarGregorian, Calendar} from 'astronomia/src/julian'
 
-RNLocation.configure({
-  distanceFilter: 100
-})
-
-let location;
-
-function useLocation() {
-
-  const [viewLocation, isViewLocation] = useState([]);
-  const permissionHandler = async () => {
-
-    let permission = await RNLocation.checkPermission({
-      ios: 'whenInUse', // or 'always'
-      android: {
-        detail: 'coarse' // or 'fine'
-      }
-    });
-    
-    if(!permission) {
-      RNLocation.requestPermission({
-        ios: "whenInUse",
-        android: {
-          detail: "coarse",
-          rationale: {
-            title: "We need to access your location",
-            message: "We use your location to show where you are on the map",
-            buttonPositive: "OK",
-            buttonNegative: "Cancel"
-          }
-        }
-      }).then(granted => {
-        if (granted) {
-          RNLocation.getLatestLocation({timeout: 100})
-          .then(latestLocation => {
-            isViewLocation(latestLocation);
-          })
-        }
-      })
-    } else {
-      RNLocation.getLatestLocation({timeout: 100})
-      .then(latestLocation => {
-        isViewLocation(latestLocation);
-      })
-    }
-  }
-
-  return {viewLocation, permissionHandler}
-}
-
-const earth = new planetposition.Planet(data.vsop87Bearth)
 const jupiter = new planetposition.Planet(data.vsop87Bjupiter)
 const mars = new planetposition.Planet(data.vsop87Bmars)
 const mercury = new planetposition.Planet(data.vsop87Bmercury)
@@ -98,31 +37,6 @@ const neptune = new planetposition.Planet(data.vsop87Bneptune)
 const saturn = new planetposition.Planet(data.vsop87Bsaturn)
 const uranus = new planetposition.Planet(data.vsop87Buranus)
 const venus = new planetposition.Planet(data.vsop87Bvenus)
-
-const today = Date.now()
-
-const getPlanetRise = (props) => {
-  //use hooks for location state
-  const {viewLocation, permissionHandler} = useLocation()
-  permissionHandler()
-  const date = new Date()
-  //todo - update planetRise object with latitude and longitude
-  const planetRise = new rise.PlanetRise(date, viewLocation.latitude, viewLocation.longitude, earth, props.planet, { date: true})
-  let riseTime = planetRise.times()['rise'].toLocaleTimeString()
-  return riseTime;
-}
-
-const getPlanetSet = (props) => {
-
-  //use hooks for location state
-  const {viewLocation, permissionHandler} = useLocation()
-  permissionHandler()
-  const date = new Date()
-  //todo - update planetRise object with latitude and longitude
-  const planetRise = new rise.PlanetRise(date, viewLocation.latitude, viewLocation.longitude, earth, props.planet, { date: true})
-  let setTime = planetRise.times()['set'].toLocaleTimeString()
-  return setTime;
-}
 
 const DATA = [
   {
@@ -165,7 +79,7 @@ const DATA = [
 const Item = ({ item, onPress, style }) => (
   <TouchableOpacity onPress={onPress} style={[styles.item, style]}>
     <Text>
-      Today, {item.title} rises at {getPlanetRise({planet: item.planet})} and sets at {getPlanetSet({planet: item.planet})}
+      {item.title}
     </Text>
   </TouchableOpacity>
 );
