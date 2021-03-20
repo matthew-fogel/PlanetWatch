@@ -184,6 +184,7 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.black,
     color: Colors.white,
     height: "100%",
+    alignItems: 'center'
   },
   sectionContainer: {
     marginTop: 32,
