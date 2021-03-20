@@ -54,12 +54,6 @@ const DATA = [
     image: require('./android/app/src/image/venus.jpg')
   },
   {
-    id: 'earth',
-    planet: mars,
-    title: 'Earth',
-    image: require('./android/app/src/image/earth.jpg')
-  },
-  {
     id: 'mars',
     planet: mars,
     title: 'Mars',
