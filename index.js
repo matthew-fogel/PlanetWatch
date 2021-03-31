@@ -7,6 +7,7 @@ import {Navigation} from 'react-native-navigation';
 import PlanetList from './PlanetList';
 import Home from './Home';
 import PlanetDetail from './PlanetDetail';
+import Sun from './Sun';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
 Navigation.setDefaultOptions({
@@ -33,14 +34,17 @@ async function getIcons() {
   const icons = await Promise.all([
     Ionicons.getImageSource('md-home', 25, '#4d089a'),
     Ionicons.getImageSource('planet', 25, '#4d089a'),
+    Ionicons.getImageSource('sunny-outline', 25, '#4d089a')
   ])
-  const [ home, planet ] = icons;
-  return { home, planet };
+  const [ home, planet, sun] = icons;
+  return { home, planet, sun };
 }
 
 Navigation.registerComponent('Home', () => Home);
 Navigation.registerComponent('PlanetList', () => PlanetList);
 Navigation.registerComponent('PlanetDetail', () => PlanetDetail);
+Navigation.registerComponent('Sun', () => Sun);
+
 
 async function startApplication() {
   const icons = await getIcons();
@@ -88,6 +92,24 @@ async function startApplication() {
                           options: {
                             bottomTab: {
                               icon: icons.planet
+                            }
+                          }
+                        }
+                      },
+                      {
+                        stack: {
+                          id: 'Sun',
+                          children: [
+                            {
+                              component: {
+                                id: 'Sun',
+                                name: 'Sun'
+                              }
+                            }
+                          ],
+                          options: {
+                            bottomTab: {
+                              icon: icons.sun
                             }
                           }
                         }
