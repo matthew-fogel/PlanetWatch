@@ -108,6 +108,18 @@ const getSunset = (props) => {
   return moment(setTime.toDate()).format()
 }
 
+const getLatitude = (props) => {
+  const {viewLocation, permissionHandler} = useLocation()
+  permissionHandler();
+  return viewLocation.latitude;
+}
+
+const getLongitude = (props) => {
+  const {viewLocation, permissionHandler} = useLocation()
+  permissionHandler();
+  return viewLocation.longitude;
+}
+
 const Sun = (props) => {
 
   let today = new Date().toString();
@@ -117,7 +129,8 @@ const Sun = (props) => {
       <StatusBar barStyle="dark-content" />
       <View style={styles.body}>
         <View style={styles.sectionContainer}>
-          <Text style={styles.sectionTitle}>Sun: rises at {getSunrise({planet: props.planetObject})} and sets at {getSunset({planet: props.planetObject})}</Text>
+          <Text style={styles.sectionTitle}>Sun: rises at {getSunrise({planet: props.planetObject})} and sets at {getSunset({planet: props.planetObject})}.</Text>
+          <Text style={styles.sectionTitle}>Lat is {getLatitude()}, and long is {getLongitude()}</Text>
         </View>
       </View>
     </>
