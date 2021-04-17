@@ -11,3 +11,5 @@
 
   TODO implement geocoding for converting street addresses into coordinates. https://www.npmjs.com/package/react-native-geocoding
   Requires an API key from Google.
+
+  Use Moment.js for time zones
