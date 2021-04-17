@@ -12,6 +12,7 @@
   "dependencies": {
     "astronomia": "^2.3.1",
     "elements": "^0.6.0",
+    "moment": "^2.29.1",
     "react": "16.13.1",
     "react-native": "^0.63.4",
     "react-native-elements": "^3.3.1",

@@ -35,6 +35,8 @@ import sunrise from 'astronomia/src/sunrise'
 import julian from 'astronomia/src/julian'
 import RNLocation from 'react-native-location'
 
+var moment = require('moment'); // require
+
 RNLocation.configure({
   distanceFilter: 100
 })
@@ -91,7 +93,7 @@ const getSunrise = (props) => {
   //todo - update sunrise object with latitude and longitude
   const sun = new sunrise.Sunrise(date, viewLocation.latitude, viewLocation.longitude)
   let riseTime = sun.rise()
-  return riseTime.toDate().toLocaleTimeString()
+  return moment(riseTime.toDate()).format()
 }
 
 const getSunset = (props) => {
@@ -102,8 +104,8 @@ const getSunset = (props) => {
   const date = new julian.Calendar(gregorianDate)
   //todo - update sunrise object with latitude and longitude
   const sun = new sunrise.Sunrise(date, viewLocation.latitude, viewLocation.longitude)
-  let riseTime = sun.set()
-  return riseTime.toDate().toLocaleTimeString()
+  let setTime = sun.set()
+  return moment(setTime.toDate()).format()
 }
 
 const Sun = (props) => {

@@ -42,6 +42,8 @@
  
  const earth = new planetposition.Planet(data.vsop87Bearth)
 
+ var moment = require('moment'); // require
+
  RNLocation.configure({
    distanceFilter: 100
  })
@@ -98,8 +100,8 @@ const getPlanetRise = (props) => {
   const date = new Date()
   //todo - update planetRise object with latitude and longitude
   const planetRise = new rise.PlanetRise(date, viewLocation.latitude, viewLocation.longitude, earth, props.planet, { date: true})
-  let riseTime = planetRise.times()['rise'].toLocaleTimeString()
-  return riseTime;
+  let riseTime = planetRise.times()['rise']
+  return moment(riseTime).format();
 }
 
 const getPlanetSet = (props) => {
@@ -110,8 +112,8 @@ const getPlanetSet = (props) => {
   const date = new Date()
   //todo - update planetRise object with latitude and longitude
   const planetRise = new rise.PlanetRise(date, viewLocation.latitude, viewLocation.longitude, earth, props.planet, { date: true})
-  let setTime = planetRise.times()['set'].toLocaleTimeString()
-  return setTime;
+  let setTime = planetRise.times()['set']
+  return moment(setTime).format();
 }
 
 const PlanetDetail = (props) => {
